@@ -1,22 +1,23 @@
-function XYZ = Fkinem(theta1, theta2, theta3)
-    R = 88.00125522;
-    r = 49.99032015;
-    l = 256; 
-    L =  115;
+function XYZ = Fk(theta1, theta2, theta3, L)
+    R = L.Base_Length; % радиус окружности основания дельта-робота
+    r = L.EndEffector_Length; % радиус окружности выходного звена дельта-робота
+    l=L.FirstLinc ; % длина первого сочленения
+    L1 = L.SecondLinc;% длина второго сочленения
+    
     t = R-r;
     theta1 = deg2rad(theta1);
     theta2 = deg2rad(theta2);
     theta3 = deg2rad(theta3);
-    y1 = -(t + L*cos(theta1));
-    z1 = - L * sin(theta1);
+    y1 = -(t + L1*cos(theta1));
+    z1 = - L1 * sin(theta1);
     
-    y2 = (t + L*cos(theta2)) * sin(pi/6);
+    y2 = (t + L1*cos(theta2)) * sin(pi/6);
     x2 = y2 * tan(pi/3);
-    z2 = -L * sin(theta2);
+    z2 = -L1 * sin(theta2);
     
-    y3 = (t + L*cos(theta3)) * sin(pi/6);
+    y3 = (t + L1*cos(theta3)) * sin(pi/6);
     x3 = -y3 * tan(pi/3);
-    z3 = -L * sin(theta3);
+    z3 = -L1 * sin(theta3);
     
     w1 = y1.^2 + z1.^2;
     w2 = x2.^2 + y2.^2 + z2.^2;
@@ -49,8 +50,8 @@ function XYZ = Fkinem(theta1, theta2, theta3)
         Y = nan;
         Z = nan;
         fl = -1;% non-existing 
-    end  
-        XYZ=[X;
-             Y;
-             Z-23]
+    end    
+    XYZ(1,1) = X;
+    XYZ(2,1) = Y;
+    XYZ(3,1) = Z-23;
 end

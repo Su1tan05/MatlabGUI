@@ -1,16 +1,16 @@
-function [theta] = IKinemTh(x0, y0, z0,R,r,L,l)
+function [theta] = IKinemTh(x0, y0, z0,L)
 
-    %     R = 88.00125522;
-    %     r = 49.99032015;
-    %     l = 256; 
-    %     L =  115; 
+    R = L.Base_Length; % радиус окружности основания дельта-робота
+    r = L.EndEffector_Length; % радиус окружности выходного звена дельта-робота
+    l=L.FirstLinc ; % длина первого сочленения
+    L1 = L.SecondLinc;% длина второго сочленения
 
     y1 = -R;
     y0 = y0-r; % shift center to edg    
-    a = (x0^2 + y0^2 + z0^2 + L^2 - l^2 - y1^2)/(2*z0);
+    a = (x0^2 + y0^2 + z0^2 + L1^2 - l^2 - y1^2)/(2*z0);
     b = (y1-y0)/z0;
     % discriminant
-    D = -(a + b*y1)^2 + L^2*(b^2+1);
+    D = -(a + b*y1)^2 + L1^2*(b^2+1);
     if D < 0 
         theta = nan; % non-existing     
     else  
